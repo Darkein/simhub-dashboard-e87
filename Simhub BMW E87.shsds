@@ -1,0 +1,52 @@
+{
+  "AutomaticReconnect": true,
+  "SerialPortName": "COM5",
+  "StartupDelayMs": 0,
+  "IsConnecting": false,
+  "IsEnabled": true,
+  "LogIncomingData": false,
+  "IsConnected": false,
+  "BaudRate": 115200,
+  "DtrEnable": true,
+  "RtsEnable": true,
+  "EditorExpanded": true,
+  "Name": "Custom Serial device",
+  "Description": "Compteur BMW",
+  "LastErrorDate": "2025-08-22T14:43:10.0299455+02:00",
+  "LastErrorMessage": null,
+  "IsFreezed": false,
+  "SettingsBuilder": {
+    "Settings": [
+      {
+        "PropertyName": "relativeRpms",
+        "CurrentValue": true,
+        "Name": null,
+        "TypeName": "BoolEntry",
+        "Label": "Relative rpms",
+        "Id": "c168b42e-59ab-4930-a8a2-c306c6af0f6b"
+      }
+    ],
+    "IsEditMode": false
+  },
+  "OnConnectMessage": {
+    "JSExt": 0,
+    "Interpreter": 1,
+    "Expression": "var ignition = $prop('EngineIgnitionOn');\r\nvar engine_running = $prop('EngineStarted');\r\n\r\nvar lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar lights_indicators;\r\nvar lights_indicator_left_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn');\r\nvar lights_indicator_right_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerRightOn');\r\nif (lights_indicator_left_prop && lights_indicator_right_prop) {\r\n    lights_indicators = 3;\r\n} else if (lights_indicator_left_prop) {\r\n    lights_indicators = 1;\r\n} else if (lights_indicator_right_prop) {\r\n    lights_indicators = 2;\r\n} else {\r\n    lights_indicators = 0;\r\n}\r\n\r\nvar rpm = $prop('Rpms');\r\nvar speed = $prop('SpeedKmh');\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop('GameRawData.TruckValues.CurrentValues.DashboardValues.WaterTemperature');\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = 0;\r\nvar airbag = 0;\r\nvar seatbelt = 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nreturn `SH;${ignition};${engine_running};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${airbag};${seatbelt};${hour};${minute};${second};${day};${month};${year};\\n`;"
+  },
+  "OnDisconnectMessage": {
+    "JSExt": 0,
+    "Interpreter": 1,
+    "Expression": "var ignition = false;\r\nvar engine_running = false;\r\n\r\nvar lights_side = false;\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar lights_indicators = false;\r\nvar lights_indicator_left_prop = false;\r\nvar lights_indicator_right_prop = false;\r\n\r\n\r\nvar rpm = $prop('Rpms');\r\nvar speed = $prop('SpeedKmh');\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop('GameRawData.TruckValues.CurrentValues.DashboardValues.WaterTemperature');\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = 0;\r\nvar airbag = 0;\r\nvar seatbelt = 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nreturn `SH;${ignition};${engine_running};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${airbag};${seatbelt};${hour};${minute};${second};${day};${month};${year};\\n`;"
+  },
+  "UpdateMessages": [
+    {
+      "Message": {
+        "JSExt": 0,
+        "Interpreter": 1,
+        "Expression": "var ignition = $prop('EngineIgnitionOn');\r\nvar engine_running = $prop('EngineStarted');\r\nvar relative_rpms = $prop('settings.relativeRpms');\r\nvar max_rpms = $prop(\"MaxRpm\");\r\nvar cluster_rpms = 7000;\r\n\r\nvar lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar lights_indicators;\r\nvar lights_indicator_left_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn');\r\nvar lights_indicator_right_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerRightOn');\r\nif (lights_indicator_left_prop && lights_indicator_right_prop) {\r\n    lights_indicators = 3;\r\n} else if (lights_indicator_left_prop) {\r\n    lights_indicators = 1;\r\n} else if (lights_indicator_right_prop) {\r\n    lights_indicators = 2;\r\n} else {\r\n    lights_indicators = 0;\r\n}\r\n\r\nvar rpm = $prop('Rpms');\r\nif(relative_rpms){\r\n\trpm = (rpm/max_rpms)*cluster_rpms\r\n}\r\nvar speed = Number($prop(\"SpeedLocal\") ?? $prop(\"SpeedKmh\") ?? $prop(\"SpeedMph\"));\r\n\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop(\"WaterTemperature\");\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = $prop(\"ABSActive\");\r\nvar tc = $prop(\"TCActive\");\r\nvar airbag = 0;\r\nvar seatbelt = 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nvar ingameTime = $prop(\"GameRawData.CommonValues.GameTime.Time\");\r\nif(ingameTime)\r\n{\r\n    var parts = String(ingameTime).split('.');  // [\"45\", \"10:15:00\"]\r\n    var days = parseInt(parts[0], 10);   // 45\r\n\r\n    var timeParts = parts[1].split(':'); // [\"10\", \"15\", \"00\"]\r\n    var hour = parseInt(timeParts[0], 10);   // 10\r\n    var minute = parseInt(timeParts[1], 10); // 15\r\n    var second = parseInt(timeParts[2], 10); // 0\r\n}\r\n\r\nreturn `SH;${ignition};${engine_running};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${tc};${airbag};${seatbelt};${hour};${minute};${second};${day};${month};${year};\\n`;"
+      },
+      "IsEnabled": true,
+      "MaximumFrequency": 60
+    }
+  ]
+}
