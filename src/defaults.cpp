@@ -2,6 +2,7 @@
 
 bool g_ignition = false;
 bool g_engine_running = false;
+bool g_check_engine = false;
 
 bool g_lights_side = false;
 bool g_lights_dip = false;
@@ -13,6 +14,14 @@ uint8_t g_lights_indicators = 0;
 uint16_t g_rpm = 0;
 uint16_t g_speed = 0;
 uint8_t g_fuel = 0;
+uint8_t g_throttle = 0;
+uint16_t g_max_torque = 0;
+
+uint16_t g_fuel_injection = 0;
+uint8_t g_water_temp = 0;
+
+bool g_cruise_enabled = true;
+uint16_t g_cruise_speed = 0;
 
 uint8_t g_engine_temperature = 0;
 
@@ -21,6 +30,11 @@ bool g_abs = false;
 bool g_tc = false;
 bool g_airbag = false;
 bool g_seatbelt = false;
+bool g_door_open = false;
+bool g_low_oil_pressure = false;
+
+
+enum GearState g_gear = GearState_Auto_P;
 
 uint8_t g_time_hour = 0;
 uint8_t g_time_minute = 0;

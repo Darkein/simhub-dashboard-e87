@@ -12,5 +12,13 @@ void sendRpm()
     rpmFrame[4] = rpm;
     rpmFrame[5] = (rpm >> 8);
 
+    // Throttle (Byte 2 & 3)
+    uint16_t throttleValue = map(g_throttle, 0, 100, 255, 65064);
+    rpmFrame[2] = throttleValue & 0xFF;
+    rpmFrame[3] = (throttleValue >> 8) & 0xFF;
+
+    // Optionnel : Byte[7] pour refléter "pied posé ou pas"
+    rpmFrame[7] = (g_throttle > 50) ? 0x80 : 0x94;
+
     CAN.sendMsgBuf(CAN_BUS_ID, 8, rpmFrame);
 }

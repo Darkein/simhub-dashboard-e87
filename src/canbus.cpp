@@ -1,25 +1,38 @@
 #include <canbus.h>
+#include <globals.h>
 
 uint32_t previous = 0;
 uint32_t counter = 0;
 
 void sendCanBus()
 {
-    uint32_t current = millis();
+    uint32_t now_us = micros();
+    uint32_t current = now_us / 1000;
     if (current - previous >= 10)
     {
-        sendIgnition();
-        sendErrorLights();
 
         if (counter % 10 == 0)
         {
-            sendSteeringWheel();
+            sendIgnition();
+            sendGearStatus();
+            sendSteeringWheelFast();
+            sendSpeed();
+            sendDmeStatus();
+            sendCruiseControl();
+            sendVehicleDynamics();
         }
-
+        
+        // Send every 50 ms
+        if (counter % 5 == 1) {
+            sendRpm();
+            sendErrorLights();
+            sendTorque();
+        }
+        
         if (counter % 20 == 7)
         {
-            sendSpeed();
-            sendRpm();
+            sendSteeringWheel();
+            sendSteeringWheelDSC();
             sendAbs();
             sendLightning();
             sendAirbag();
@@ -32,6 +45,7 @@ void sendCanBus()
 
         if (counter % 50 == 0)
         {
+            sendOilLevel();
         }
 
         if (counter % 100 == 0)

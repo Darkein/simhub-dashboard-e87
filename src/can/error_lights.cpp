@@ -22,6 +22,8 @@ void sendErrorLights()
     sendErrorLight(DSC_TRIANGLE_SYMBOL_ONLY, g_abs);
     sendErrorLight(DTC_SYMBOL_ONLY, g_tc);
     sendErrorLight(SERVICE_LIGHT, false);
-    sendErrorLight(CRUISE_WARNING, false);
     sendErrorLight(STEERING_WARNING, false);
+    sendErrorLight(OIL_LEVEL_LOW, g_low_oil_pressure);
+    sendErrorLight(CHECK_ENGINE_DOUBLE, g_check_engine);
+    sendErrorLight(DOOR_OPEN_LEFT, g_door_open);
 }

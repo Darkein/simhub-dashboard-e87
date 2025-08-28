@@ -18,4 +18,13 @@ void sendTime()
     timeFrame[6] = (g_time_year >> 8);
 
     CAN.sendMsgBuf(CAN_BUS_ID, 8, timeFrame);
+
+
+/*
+uint8_t frame1[8] = {0x1D, 0xE1, 0x00, 0xF0, 0xFF, 0x7F, 0xDE, 0x04 };
+uint8_t frame2[6] = {0xE1, 0xFD, 0x21, 0xA2, 0x7F, 0x1E};
+
+CAN.sendMsgBuf(0x264, 8, frame1);
+CAN.sendMsgBuf(0x264, 6, frame2);
+*/
 }
