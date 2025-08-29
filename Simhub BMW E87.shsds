@@ -1,9 +1,9 @@
 {
   "AutomaticReconnect": true,
-  "SerialPortName": "COM5",
+  "SerialPortName": "COM12",
   "StartupDelayMs": 0,
   "IsConnecting": false,
-  "IsEnabled": true,
+  "IsEnabled": false,
   "LogIncomingData": false,
   "IsConnected": false,
   "BaudRate": 115200,
@@ -12,7 +12,7 @@
   "EditorExpanded": true,
   "Name": "Custom Serial device",
   "Description": "Compteur BMW",
-  "LastErrorDate": "2025-08-22T14:43:10.0299455+02:00",
+  "LastErrorDate": "2025-08-28T17:38:34.8026686+02:00",
   "LastErrorMessage": null,
   "IsFreezed": false,
   "SettingsBuilder": {
@@ -24,6 +24,139 @@
         "TypeName": "BoolEntry",
         "Label": "Relative rpms",
         "Id": "c168b42e-59ab-4930-a8a2-c306c6af0f6b"
+      },
+      {
+        "Maximum": 20000,
+        "Minimum": 0,
+        "PropertyName": "clusterRpms",
+        "CurrentValue": 7000,
+        "Name": null,
+        "TypeName": "SliderEntry",
+        "Label": "Cluster Rpms",
+        "Id": "74a3d7f9-a816-47a1-ba11-0965bb2b98a6"
+      },
+      {
+        "Settings": [
+          {
+            "PropertyName": "useFixedSpeed",
+            "CurrentValue": true,
+            "Name": null,
+            "TypeName": "BoolEntry",
+            "Label": "Use Fixed Speed",
+            "Id": "bf342cf6-d98c-43a3-bd6f-60f6551ec57c"
+          },
+          {
+            "Settings": [
+              {
+                "Maximum": 240,
+                "Minimum": 0,
+                "PropertyName": "fixedSpeed",
+                "CurrentValue": 100,
+                "Name": null,
+                "TypeName": "SliderEntry",
+                "Label": "Speed",
+                "Id": "09c701f6-954c-4366-bd71-8e194e3db8a0"
+              },
+              {
+                "PropertyName": "useFixedSpeedKph",
+                "CurrentValue": true,
+                "Name": null,
+                "TypeName": "BoolEntry",
+                "Label": "Speed is kph",
+                "Id": "cbd3c1d4-e03c-4bb5-80f2-d2232d89dc8d"
+              }
+            ],
+            "Name": null,
+            "TypeName": "GroupEntry",
+            "IsEnabledFormula": {
+              "Expression": "[settings.useFixedSpeed]"
+            },
+            "Label": "",
+            "IsVisibleFormula": {
+              "Expression": "[settings.useFixedSpeed]"
+            },
+            "Id": "ce27cc7d-95d3-46ae-9c6e-05ae3fbf7d57"
+          },
+          {
+            "PropertyName": "useFixedRpms",
+            "CurrentValue": true,
+            "Name": null,
+            "TypeName": "BoolEntry",
+            "Label": "Use Fixed Rpms",
+            "Id": "11c5132f-617a-4c2f-af71-921fa2c1c7e0"
+          },
+          {
+            "Settings": [
+              {
+                "Maximum": 20000,
+                "Minimum": 0,
+                "PropertyName": "fixedRpms",
+                "CurrentValue": 0,
+                "Name": null,
+                "TypeName": "SliderEntry",
+                "Label": "Rpms",
+                "Id": "c07d6796-0880-469f-b135-3f00277bc135"
+              }
+            ],
+            "Name": null,
+            "TypeName": "GroupEntry",
+            "IsEnabledFormula": {
+              "Expression": "[settings.useFixedRpms]"
+            },
+            "Label": "",
+            "IsVisibleFormula": {
+              "Expression": "[settings.useFixedRpms]"
+            },
+            "Id": "bc7cc9ba-a5f9-40ad-91d1-cc6b350839ca"
+          },
+          {
+            "PropertyName": "useFixedInstantL100km",
+            "CurrentValue": true,
+            "Name": null,
+            "TypeName": "BoolEntry",
+            "Label": "Use Fixed L/100km",
+            "Id": "e4c514eb-417e-4e9f-8326-a7fa2a66e19b"
+          },
+          {
+            "Settings": [
+              {
+                "Maximum": 500,
+                "Minimum": 0,
+                "PropertyName": "fixedInstantL10km",
+                "CurrentValue": 333,
+                "Name": null,
+                "TypeName": "SliderEntry",
+                "Label": "l/10km      /!\\",
+                "Id": "b1ab47cc-a32c-4278-846c-c5cfaefed4bb"
+              },
+              {
+                "ValueFormula": {
+                  "Expression": "[settings.fixedInstantL10km]*0.1"
+                },
+                "PropertyName": "fixedInstantL100km",
+                "CurrentValue": 33.300000000000004,
+                "Name": null,
+                "TypeName": "ComputedSetting",
+                "Label": null,
+                "Id": "fbb14324-a9a8-4856-8ac5-e1a01bad5a39"
+              }
+            ],
+            "Name": null,
+            "TypeName": "GroupEntry",
+            "IsEnabledFormula": {
+              "Expression": "[settings.useFixedInstantL100km]"
+            },
+            "Label": "",
+            "IsVisibleFormula": {
+              "Expression": "[settings.useFixedInstantL100km]"
+            },
+            "Id": "5f906f1f-b4f4-4299-b505-bf23883a2fce"
+          }
+        ],
+        "Name": null,
+        "TypeName": "GroupEntry",
+        "Label": "Fixed Values",
+        "Id": "ff744dff-e653-4e93-9195-baea9d95a29c"
       }
     ],
     "IsEditMode": false
@@ -31,19 +164,19 @@
   "OnConnectMessage": {
     "JSExt": 0,
     "Interpreter": 1,
-    "Expression": "var ignition = $prop('EngineIgnitionOn');\r\nvar engine_running = $prop('EngineStarted');\r\n\r\nvar lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar lights_indicators;\r\nvar lights_indicator_left_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn');\r\nvar lights_indicator_right_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerRightOn');\r\nif (lights_indicator_left_prop && lights_indicator_right_prop) {\r\n    lights_indicators = 3;\r\n} else if (lights_indicator_left_prop) {\r\n    lights_indicators = 1;\r\n} else if (lights_indicator_right_prop) {\r\n    lights_indicators = 2;\r\n} else {\r\n    lights_indicators = 0;\r\n}\r\n\r\nvar rpm = $prop('Rpms');\r\nvar speed = $prop('SpeedKmh');\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop('GameRawData.TruckValues.CurrentValues.DashboardValues.WaterTemperature');\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = 0;\r\nvar airbag = 0;\r\nvar seatbelt = 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nreturn `SH;${ignition};${engine_running};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${airbag};${seatbelt};${hour};${minute};${second};${day};${month};${year};\\n`;"
+    "Expression": ""
   },
   "OnDisconnectMessage": {
     "JSExt": 0,
     "Interpreter": 1,
-    "Expression": "var ignition = false;\r\nvar engine_running = false;\r\n\r\nvar lights_side = false;\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar lights_indicators = false;\r\nvar lights_indicator_left_prop = false;\r\nvar lights_indicator_right_prop = false;\r\n\r\n\r\nvar rpm = $prop('Rpms');\r\nvar speed = $prop('SpeedKmh');\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop('GameRawData.TruckValues.CurrentValues.DashboardValues.WaterTemperature');\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = 0;\r\nvar airbag = 0;\r\nvar seatbelt = 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nreturn `SH;${ignition};${engine_running};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${airbag};${seatbelt};${hour};${minute};${second};${day};${month};${year};\\n`;"
+    "Expression": "var ignition = 0;\r\nvar engine_running = 0;\r\nvar relative_rpms = $prop('settings.relativeRpms');\r\nvar max_rpms = $prop(\"MaxRpm\");\r\nvar cluster_rpms = 7000;\r\n\r\nvar lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\nvar check_engine = $prop(\"GameRawData.TruckValues.CurrentValues.DamageValues.Engine\")>=0.1?1:0;\r\n\r\nvar lights_indicators;\r\nvar lights_indicator_left_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn');\r\nvar lights_indicator_right_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerRightOn');\r\nif (lights_indicator_left_prop && lights_indicator_right_prop) {\r\n    lights_indicators = 3;\r\n} else if (lights_indicator_left_prop) {\r\n    lights_indicators = 1;\r\n} else if (lights_indicator_right_prop) {\r\n    lights_indicators = 2;\r\n} else {\r\n    lights_indicators = 0;\r\n}\r\n\r\nvar rpm = $prop('Rpms');\r\nif(relative_rpms){\r\n\trpm = (rpm/max_rpms)*cluster_rpms\r\n}\r\nvar speed = Number($prop(\"SpeedLocal\") ?? $prop(\"SpeedKmh\") ?? $prop(\"SpeedMph\"));\r\n\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop(\"WaterTemperature\");\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = $prop(\"ABSActive\");\r\nvar tc = $prop(\"TCActive\");\r\nvar airbag = 0;\r\nvar seatbelt = $prop(\"Spectating\")?0:1;\r\nvar door_open = $prop(\"DataCorePlugin.GamePaused\")?1:0;\r\n\r\nvar cruise_speed = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.CruiseControlSpeed.Kph\") ?? 0;\r\nvar cruise_enabled = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.CruiseControl\")?1:0;\r\nvar fuel_injection = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.FuelValue.AverageConsumption\") ?? 0;\r\nvar water_temp = $prop(\"WaterTemperature\");\r\nvar low_oil_pressure = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.WarningValues.OilPressure\") ?? 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nvar ingameTime = $prop(\"GameRawData.CommonValues.GameTime.Time\");\r\nif(ingameTime)\r\n{\r\n    var parts = String(ingameTime).split('.');  // [\"45\", \"10:15:00\"]\r\n    var days = parseInt(parts[0], 10);   // 45\r\n\r\n    var timeParts = parts[1].split(':'); // [\"10\", \"15\", \"00\"]\r\n    var hour = parseInt(timeParts[0], 10);   // 10\r\n    var minute = parseInt(timeParts[1], 10); // 15\r\n    var second = parseInt(timeParts[2], 10); // 0\r\n}\r\n\r\nreturn `SH;${ignition};${engine_running};${check_engine};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${tc};${airbag};${seatbelt};${door_open};${cruise_speed};${cruise_enabled};${fuel_injection};${water_temp};${low_oil_pressure};${hour};${minute};${second};${day};${month};${year};\\n`;"
   },
   "UpdateMessages": [
     {
       "Message": {
         "JSExt": 0,
         "Interpreter": 1,
-        "Expression": "var ignition = $prop('EngineIgnitionOn');\r\nvar engine_running = $prop('EngineStarted');\r\nvar relative_rpms = $prop('settings.relativeRpms');\r\nvar max_rpms = $prop(\"MaxRpm\");\r\nvar cluster_rpms = 7000;\r\n\r\nvar lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar lights_indicators;\r\nvar lights_indicator_left_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn');\r\nvar lights_indicator_right_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerRightOn');\r\nif (lights_indicator_left_prop && lights_indicator_right_prop) {\r\n    lights_indicators = 3;\r\n} else if (lights_indicator_left_prop) {\r\n    lights_indicators = 1;\r\n} else if (lights_indicator_right_prop) {\r\n    lights_indicators = 2;\r\n} else {\r\n    lights_indicators = 0;\r\n}\r\n\r\nvar rpm = $prop('Rpms');\r\nif(relative_rpms){\r\n\trpm = (rpm/max_rpms)*cluster_rpms\r\n}\r\nvar speed = Number($prop(\"SpeedLocal\") ?? $prop(\"SpeedKmh\") ?? $prop(\"SpeedMph\"));\r\n\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar engine_temperature = $prop(\"WaterTemperature\");\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = $prop(\"ABSActive\");\r\nvar tc = $prop(\"TCActive\");\r\nvar airbag = 0;\r\nvar seatbelt = 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nvar ingameTime = $prop(\"GameRawData.CommonValues.GameTime.Time\");\r\nif(ingameTime)\r\n{\r\n    var parts = String(ingameTime).split('.');  // [\"45\", \"10:15:00\"]\r\n    var days = parseInt(parts[0], 10);   // 45\r\n\r\n    var timeParts = parts[1].split(':'); // [\"10\", \"15\", \"00\"]\r\n    var hour = parseInt(timeParts[0], 10);   // 10\r\n    var minute = parseInt(timeParts[1], 10); // 15\r\n    var second = parseInt(timeParts[2], 10); // 0\r\n}\r\n\r\nreturn `SH;${ignition};${engine_running};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${speed};${fuel};${engine_temperature};${handbrake};${abs};${tc};${airbag};${seatbelt};${hour};${minute};${second};${day};${month};${year};\\n`;"
+        "Expression": "var use_fixed_rpms = $prop('settings.useFixedRpms');\r\nvar fixed_rpms = $prop('settings.fixedRpms');\r\nvar use_fixed_speed = $prop('settings.useFixedSpeed');\r\nvar fixed_speed = $prop('settings.fixedSpeed');\r\nvar use_fixed_speed_kph = $prop('settings.useFixedSpeedKph');\r\nvar fixed_instant_l100km = $prop('settings.fixedInstantL100km');\r\nvar use_fixed_instant_l100km = $prop('settings.useFixedInstantL100km');\r\nvar relative_rpms = $prop('settings.relativeRpms');\r\n\r\nvar ignition = $prop('EngineIgnitionOn');\r\nvar engine_running = $prop('EngineStarted');\r\nvar max_rpms = $prop(\"MaxRpm\");\r\nvar cluster_rpms = $prop('settings.clusterRpms');\r\nvar throttle = $prop(\"MaxEngineTorque\");\r\nvar torque = $prop(\"EngineTorque\");\r\n\r\nvar lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));\r\nvar lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));\r\nvar lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));\r\nvar lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));\r\nvar lights_rear_fog = 0;\r\n\r\nvar damages = ($prop(\"GameRawData.TruckValues.CurrentValues.DamageValues.Cabin\") + $prop(\"GameRawData.TruckValues.CurrentValues.DamageValues.Chassis\") + $prop(\"GameRawData.TruckValues.CurrentValues.DamageValues.Engine\") + $prop(\"GameRawData.TruckValues.CurrentValues.DamageValues.Transmission\") + $prop(\"GameRawData.TruckValues.CurrentValues.DamageValues.WheelsAvg\")) / 5;\r\n\r\nvar check_engine = damages>=0.15?1:0;\r\n\r\nvar lights_indicators;\r\nvar lights_indicator_left_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerLeftOn');\r\nvar lights_indicator_right_prop = $prop('GameRawData.TruckValues.CurrentValues.LightsValues.BlinkerRightOn');\r\nif (lights_indicator_left_prop && lights_indicator_right_prop) {\r\n    lights_indicators = 3;\r\n} else if (lights_indicator_left_prop) {\r\n    lights_indicators = 1;\r\n} else if (lights_indicator_right_prop) {\r\n    lights_indicators = 2;\r\n} else {\r\n    lights_indicators = 0;\r\n}\r\n\r\nvar rpm = $prop('Rpms');\r\nif(relative_rpms){\r\n\trpm = (rpm/max_rpms)*cluster_rpms\r\n}\r\nvar speed = Number($prop(\"SpeedMph\"));\r\n\r\nvar currentFuel = $prop('Fuel');\r\nvar maxFuel = $prop('MaxFuel');\r\nfunction calculate(current, max) {\r\n    return (current / max) * 100;\r\n}\r\nvar fuel = calculate(currentFuel, maxFuel);\r\nif (isNaN(fuel)) {\r\n    fuel = 0;\r\n}\r\n\r\nvar oil_temp = $prop(\"OilTemperature\");\r\n\r\nvar handbrake = Number($prop('GameRawData.TruckValues.CurrentValues.MotorValues.BrakeValues.ParkingBrake'));\r\nvar abs = $prop(\"ABSActive\");\r\nvar tc = $prop(\"TCActive\");\r\nvar airbag = 0;\r\nvar seatbelt = $prop(\"Spectating\")?1:0;\r\nvar door_open = $prop(\"DataCorePlugin.GamePaused\")?1:0;\r\n\r\nvar cruise_speed = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.CruiseControlSpeed.Kph\") ?? 0;\r\nvar cruise_enabled = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.CruiseControl\")?1:0;\r\n\r\ninstantL100km = $prop(\"InstantConsumption_L100KM\");\r\n\r\nvar water_temp = $prop(\"WaterTemperature\");\r\nvar low_oil_pressure = $prop(\"GameRawData.TruckValues.CurrentValues.DashboardValues.WarningValues.OilPressure\") ?1: 0;\r\n\r\nvar currentTime = new Date();\r\nvar hour = currentTime.getHours();\r\nvar minute = currentTime.getMinutes();\r\nvar second = currentTime.getSeconds();\r\nvar year = currentTime.getFullYear();\r\nvar month = currentTime.getMonth();\r\nvar day = currentTime.getDay();\r\n\r\nvar ingameTime = $prop(\"GameRawData.CommonValues.GameTime.Time\");\r\nif(ingameTime)\r\n{\r\n    var parts = String(ingameTime).split('.');  // [\"45\", \"10:15:00\"]\r\n    var days = parseInt(parts[0], 10);   // 45\r\n\r\n    var timeParts = parts[1].split(':'); // [\"10\", \"15\", \"00\"]\r\n    var hour = parseInt(timeParts[0], 10);   // 10\r\n    var minute = parseInt(timeParts[1], 10); // 15\r\n    var second = parseInt(timeParts[2], 10); // 0\r\n}\r\n\r\nif(use_fixed_rpms)\r\n\trpm = fixed_rpms;\r\n\t\r\nif(use_fixed_instant_l100km)\r\n\tinstantL100km = fixed_instant_l100km;\r\n\t\r\nif(use_fixed_speed)\r\n\tspeed = fixed_speed * (use_fixed_speed_kph ? 0.621371 : 1);\r\n\r\nreturn `SH;${ignition};${engine_running};${check_engine};${lights_side};${lights_dip};${lights_main};${lights_front_fog};${lights_rear_fog};${lights_indicators};${rpm};${throttle};${torque};${speed};${fuel};${oil_temp};${handbrake};${abs};${tc};${airbag};${seatbelt};${door_open};${cruise_speed};${cruise_enabled};${instantL100km};${water_temp};${low_oil_pressure};${hour};${minute};${second};${day};${month};${year};\\n`;"
       },
       "IsEnabled": true,
       "MaximumFrequency": 60

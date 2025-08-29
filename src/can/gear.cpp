@@ -23,6 +23,7 @@ int mapGenericGearToLocalGear(GearState inputGear) {
     case GearState_Auto_N: return 0x87; break;
     case GearState_Auto_D: return 0x78; break;
     case GearState_Auto_S: return 0x78; break;
+    default: return 0;
   }
 }
 
@@ -33,7 +34,7 @@ void sendGearStatus() {
   // 0x78 = D
   // 0x87, 0x96 = N
   int gear = mapGenericGearToLocalGear(g_gear);
-  uint8_t gearFrame[6] = {gear, 0x0C, 0x80, (counterGear << 4 | 0x0C), 0xF0, 0xFF};
+  uint8_t gearFrame[6] = {(uint8_t)gear, 0x0C, 0x80, (uint8_t)(counterGear << 4 | 0x0C), 0xF0, 0xFF};
   CAN.sendMsgBuf(0x1D2, 0, 6, gearFrame);
 
   counterGear++;

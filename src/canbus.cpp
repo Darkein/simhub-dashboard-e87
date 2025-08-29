@@ -11,32 +11,31 @@ void sendCanBus()
     if (current - previous >= 10)
     {
 
-        if (counter % 10 == 0)
-        {
+
             sendIgnition();
             sendGearStatus();
-            sendSteeringWheelFast();
             sendSpeed();
-            sendDmeStatus();
+            sendSteeringWheel();
+            //sendDmeStatus();
             sendCruiseControl();
             sendVehicleDynamics();
-        }
+        
         
         // Send every 50 ms
         if (counter % 5 == 1) {
             sendRpm();
+            sendEngineTempAndFuelInjection();
             sendErrorLights();
             sendTorque();
         }
         
         if (counter % 20 == 7)
         {
-            sendSteeringWheel();
+            sendSteeringWheelSlow();
             sendSteeringWheelDSC();
             sendAbs();
             sendLightning();
             sendAirbag();
-            sendEngineTemperature();
             sendFuel();
             sendHandbrake();
             sendSeatbelt();

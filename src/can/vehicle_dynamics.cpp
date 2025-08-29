@@ -6,7 +6,7 @@ void sendVehicleDynamics()
     const uint32_t ID = 0x1A0;
     static uint8_t alive_counter = 0;
 
-    float speed_kmh = g_speed / 10.f;
+    float speed_kmh = g_speed_kph / 10.f;
     // Moving forward, backward not supported yet
     uint8_t st_veh_dvco = speed_kmh >= 1 ? 1 : 0;
     float acc_long = 0.f; // m/s²
@@ -18,8 +18,8 @@ void sendVehicleDynamics()
     int16_t acc_lat_raw = (int16_t)(acc_lat / 0.025f);
     int16_t yaw_rate_raw = (int16_t)(yaw_rate / 0.05f);
 
-    uint8_t frame[8] = {0};
-
+    uint8_t frame[8] = {0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+/*
     frame[0] = v_veh_raw & 0xFF;
     frame[1] = (st_veh_dvco & 0x07) << 4;
     frame[2] = acc_long_raw & 0xFF;
@@ -34,6 +34,6 @@ void sendVehicleDynamics()
         checksum ^= frame[i];
     }
     frame[7] = checksum;
-
+*/
     CAN.sendMsgBuf(ID, 8, frame);
 }

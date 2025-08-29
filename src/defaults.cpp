@@ -12,18 +12,19 @@ bool g_lights_rear_fog = false;
 uint8_t g_lights_indicators = 0;
 
 uint16_t g_rpm = 0;
-uint16_t g_speed = 0;
+uint16_t g_speed_mph = 0;
+uint16_t g_speed_kph = 0;
 uint8_t g_fuel = 0;
 uint8_t g_throttle = 0;
 uint16_t g_max_torque = 0;
 
-uint16_t g_fuel_injection = 0;
+float g_l_100km = 0;
 uint8_t g_water_temp = 0;
 
 bool g_cruise_enabled = true;
 uint16_t g_cruise_speed = 0;
 
-uint8_t g_engine_temperature = 0;
+uint8_t g_oil_temp = 0;
 
 bool g_handbrake = false;
 bool g_abs = false;

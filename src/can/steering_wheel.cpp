@@ -3,26 +3,20 @@
 
 void sendSteeringWheel()
 {
-    float angleDeg = 0;
-    float speedDegPerSec = 0;
     const uint16_t CAN_ID = 0x0C4;
-    uint8_t frame[7] = {0};
+    uint8_t steering_wheel_frame[7] = {0x83, 0xFD, 0xFC, 0x00, 0x00, 0xFF, 0xF1};
 
-    // SteeringPosition (0..15)
-    int16_t angleRaw = angleDeg / 0.04395f;
-    frame[0] = (angleRaw >> 8) & 0xFF; // MSB
-    frame[1] = angleRaw & 0xFF;        // LSB
+    steering_wheel_frame[1] = 0;
+    steering_wheel_frame[2] = 0;
 
-    // SteeringSpeed (24..39)
-    int16_t speedRaw = speedDegPerSec / 0.04395f;
-    frame[3] = (speedRaw >> 8) & 0xFF;
-    frame[4] = speedRaw & 0xFF;
+    CAN.sendMsgBuf(CAN_ID, 7, steering_wheel_frame);
 
-    // reste à zéro ou valeurs constantes si nécessaire
-    CAN.sendMsgBuf(CAN_ID, 0, 7, frame);
+    const uint16_t CAN_ID_EPS = 0x1fb;
+    uint8_t eps_frame[8] = {0};
+    CAN.sendMsgBuf(CAN_ID_EPS, 8, eps_frame);
 }
 
-void sendSteeringWheelFast()
+void sendSteeringWheelSlow()
 {
     float angleDeg = 0;
     float speedDegPerSec = 0;
@@ -53,15 +47,15 @@ void sendSteeringWheelFast()
 
 void sendSteeringWheelDSC()
 {
-    
-    const uint16_t CAN_ID = 0x0C9;
+
+    const uint16_t CAN_ID = 0x392;
     uint8_t frame[8] = {0};
 
     // === SteeringPosition ===
-    float angleDeg = 0.0; // angle à simuler
+    float angleDeg = 0.0;                  // angle à simuler
     int16_t angleRaw = angleDeg / 0.04395; // conversion DBC
-    frame[0] = (angleRaw >> 8) & 0xFF; // MSB
-    frame[1] = angleRaw & 0xFF;        // LSB
+    frame[0] = (angleRaw >> 8) & 0xFF;     // MSB
+    frame[1] = angleRaw & 0xFF;            // LSB
 
     // === Counter 0xC9 ===
     static uint8_t counter = 0;
@@ -70,9 +64,9 @@ void sendSteeringWheelDSC()
 
     // === SteeringPositionComplementLow ===
     // 11 bits à partir du bit 24
-    uint16_t complement = 0; // on peut laisser 0 pour test
-    frame[3] = (complement >> 3) & 0xFF;  // bits 24-31
-    frame[4] = (complement & 0x07) << 5;  // bits 32-34, reste à 0
+    uint16_t complement = 0;             // on peut laisser 0 pour test
+    frame[3] = (complement >> 3) & 0xFF; // bits 24-31
+    frame[4] = (complement & 0x07) << 5; // bits 32-34, reste à 0
 
     // Les octets restants peuvent rester à 0
     frame[5] = 0;
@@ -80,5 +74,4 @@ void sendSteeringWheelDSC()
     frame[7] = 0;
 
     CAN.sendMsgBuf(CAN_ID, 0, 8, frame);
-    
 }

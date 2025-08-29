@@ -24,10 +24,10 @@ void readSerial()
         uint16_t rpm = Serial.readStringUntil(';').toInt();
         uint8_t throttle = Serial.readStringUntil(';').toInt();
         uint16_t torque = Serial.readStringUntil(';').toInt();
-        uint16_t speed = Serial.readStringUntil(';').toInt();
+        uint16_t speed_mph = Serial.readStringUntil(';').toInt();
         uint8_t fuel = Serial.readStringUntil(';').toInt();
 
-        uint8_t engine_temperature = Serial.readStringUntil(';').toInt();
+        uint8_t oil_temp = Serial.readStringUntil(';').toInt();
 
         bool handbrake = Serial.readStringUntil(';').toInt();
         bool abs = Serial.readStringUntil(';').toInt();
@@ -39,7 +39,7 @@ void readSerial()
         uint8_t cruise_speed = Serial.readStringUntil(';').toInt();
         bool cruise_enabled = Serial.readStringUntil(';').toInt();
 
-        uint8_t fuel_injection = Serial.readStringUntil(';').toInt();
+        float l_100km = Serial.readStringUntil(';').toFloat();
         uint8_t water_temp = Serial.readStringUntil(';').toInt();
         bool low_oil_pressure = Serial.readStringUntil(';').toInt();
         
@@ -66,14 +66,15 @@ void readSerial()
         g_rpm = rpm;
         g_throttle = throttle;
         g_max_torque = torque;
-        g_speed = speed;
+        g_speed_mph = speed_mph;
+        g_speed_kph = speed_mph * 1.6093435f;
         g_fuel = fuel;
 
-        g_engine_temperature = engine_temperature;
+        g_oil_temp = oil_temp;
         g_cruise_speed = cruise_speed;
         g_cruise_enabled = cruise_enabled;
 
-        g_fuel_injection = fuel_injection;
+        g_l_100km = l_100km;
         g_water_temp = water_temp;
         g_low_oil_pressure = low_oil_pressure;
 

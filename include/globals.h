@@ -15,17 +15,18 @@ extern uint8_t g_lights_indicators;
 
 extern uint16_t g_rpm;
 extern uint8_t g_throttle;
-extern uint16_t g_speed;
+extern uint16_t g_speed_mph;
+extern uint16_t g_speed_kph;
 extern uint8_t g_fuel;
 extern uint16_t g_max_torque;
 
 extern uint16_t g_cruise_speed;
 extern bool g_cruise_enabled;
 
-extern uint16_t g_fuel_injection;
+extern float g_l_100km;
 extern uint8_t g_water_temp;
 
-extern uint8_t g_engine_temperature;
+extern uint8_t g_oil_temp;
 
 extern bool g_handbrake;
 extern bool g_abs;
