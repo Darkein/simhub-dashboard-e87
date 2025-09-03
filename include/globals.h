@@ -35,6 +35,11 @@ extern bool g_airbag;
 extern bool g_seatbelt;
 extern bool g_door_open;
 extern bool g_low_oil_pressure;
+extern bool g_car_ahead;
+extern bool g_low_pressure_front_left;
+extern bool g_low_pressure_front_right;
+extern bool g_low_pressure_rear_left;
+extern bool g_low_pressure_rear_right;
 
 extern uint8_t g_time_hour;
 extern uint8_t g_time_minute;

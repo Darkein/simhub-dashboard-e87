@@ -3,7 +3,7 @@
 
 const uint32_t CAN_BUS_ID = 0x1D0;
 const float fuel_density = 0.745f; // essence kg/L
-const float scaling_factor = 1.303f;      // trouvé empiriquement pour corriger l’écart
+const float scaling_factor = 1.300f;      // trouvé empiriquement pour corriger l’écart
 
 void sendEngineTempAndFuelInjection()
 {
@@ -12,7 +12,7 @@ void sendEngineTempAndFuelInjection()
     static uint16_t fuel_injection_total = 0;
     static unsigned long lastUpdate = 0;
     
-    unsigned long now = millis();
+    unsigned long now = micros();
     unsigned long dt = now - lastUpdate;
 
 
@@ -30,7 +30,7 @@ void sendEngineTempAndFuelInjection()
     if (g_speed_kph > 0 && g_l_100km > 0)
     {
         float L_h = (g_l_100km * g_speed_kph) / 100.0f;
-        float mg = (L_h / 3600.0f) * fuel_density * 1e6f * (dt /1000.0f);
+        float mg = (L_h / 3600.0f) * fuel_density * (dt);
         fuel_injection_total += (uint16_t)(mg * scaling_factor);
     }
 

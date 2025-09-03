@@ -6,20 +6,20 @@ void sendVehicleDynamics()
     const uint32_t ID = 0x1A0;
     static uint8_t alive_counter = 0;
 
-    float speed_kmh = g_speed_kph / 10.f;
+    float speed_kmh = g_speed_kph;
     // Moving forward, backward not supported yet
     uint8_t st_veh_dvco = speed_kmh >= 1 ? 1 : 0;
     float acc_long = 0.f; // m/s²
     float acc_lat = 0.f;  // m/s²
     float yaw_rate = 0.f; // deg/s
 
-    uint16_t v_veh_raw = (uint16_t)(speed_kmh / 0.1f);
+    uint16_t v_veh_raw = (uint16_t)(speed_kmh);
     int16_t acc_long_raw = (int16_t)(acc_long / 0.025f);
     int16_t acc_lat_raw = (int16_t)(acc_lat / 0.025f);
     int16_t yaw_rate_raw = (int16_t)(yaw_rate / 0.05f);
 
     uint8_t frame[8] = {0x6F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-/*
+
     frame[0] = v_veh_raw & 0xFF;
     frame[1] = (st_veh_dvco & 0x07) << 4;
     frame[2] = acc_long_raw & 0xFF;
@@ -34,6 +34,14 @@ void sendVehicleDynamics()
         checksum ^= frame[i];
     }
     frame[7] = checksum;
-*/
+
     CAN.sendMsgBuf(ID, 8, frame);
 }
+
+/**
+ * var lights_side = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Parking'));
+var lights_dip = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamLow'));
+var lights_main = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.BeamHigh'));
+var lights_front_fog = Number($prop('GameRawData.TruckValues.CurrentValues.LightsValues.Beacon'));
+var lights_rear_fog = 0;
+ */

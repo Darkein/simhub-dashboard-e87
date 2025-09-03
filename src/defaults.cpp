@@ -33,6 +33,11 @@ bool g_airbag = false;
 bool g_seatbelt = false;
 bool g_door_open = false;
 bool g_low_oil_pressure = false;
+bool g_car_ahead = false;
+bool g_low_pressure_front_left = false;
+bool g_low_pressure_front_right = false;
+bool g_low_pressure_rear_left = false;
+bool g_low_pressure_rear_right = false;
 
 
 enum GearState g_gear = GearState_Auto_P;

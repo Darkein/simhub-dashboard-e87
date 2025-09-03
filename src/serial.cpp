@@ -42,13 +42,19 @@ void readSerial()
         float l_100km = Serial.readStringUntil(';').toFloat();
         uint8_t water_temp = Serial.readStringUntil(';').toInt();
         bool low_oil_pressure = Serial.readStringUntil(';').toInt();
-        
+
         uint8_t time_hour = Serial.readStringUntil(';').toInt();
         uint8_t time_minute = Serial.readStringUntil(';').toInt();
         uint8_t time_second = Serial.readStringUntil(';').toInt();
         uint8_t time_day = Serial.readStringUntil(';').toInt();
         uint8_t time_month = Serial.readStringUntil(';').toInt();
         uint16_t time_year = Serial.readStringUntil(';').toInt();
+
+        bool car_ahead = Serial.readStringUntil(';').toInt();
+        bool low_pressure_front_left = Serial.readStringUntil(';').toInt();
+        bool low_pressure_front_right = Serial.readStringUntil(';').toInt();
+        bool low_pressure_rear_left = Serial.readStringUntil(';').toInt();
+        bool low_pressure_rear_right = Serial.readStringUntil(';').toInt();
 
         String noop = Serial.readStringUntil('\n');
 
@@ -84,6 +90,12 @@ void readSerial()
         g_airbag = airbag;
         g_seatbelt = seatbelt;
         g_door_open = door_open;
+
+        g_car_ahead = car_ahead;
+        g_low_pressure_front_left = low_pressure_front_left;
+        g_low_pressure_front_right = low_pressure_front_right;
+        g_low_pressure_rear_left = low_pressure_rear_left;
+        g_low_pressure_rear_right = low_pressure_rear_right;
 
         g_time_hour = time_hour;
         g_time_minute = time_minute;

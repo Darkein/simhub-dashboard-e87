@@ -58,7 +58,6 @@ void sendSpeed()
 
     uint8_t wheelFrame[8] = {0};
 
-    // Conversion km/h -> mph
     uint16_t wheelRaw = (uint16_t)(mph * 24);
 
     // 4 roues identiques
